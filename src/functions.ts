@@ -13,7 +13,6 @@ export const createMovie = async (
 
     const movieData: movieCreate = {
       ...movieDataRequest,
-      description: "null",
     };
 
     const queryString: string = format(
@@ -44,7 +43,7 @@ export const listAllMovies = async (
   request: Request,
   response: Response
 ): Promise<Response> => {
-  const sort = request.query.sort as string;
+  let sort = request.query.sort as string;
   let order = request.query.order as string;
   let perPage: any =
     request.query.perPage === undefined ? 5 : request.query.perPage;
@@ -56,12 +55,10 @@ export const listAllMovies = async (
 
   if (isNaN(page) || page < 0) {
     page = 1;
-    console.log(page, perPage);
   }
 
   if (isNaN(perPage) || perPage < 0 || perPage > 5) {
     perPage = 5;
-    console.log(page, perPage);
   }
 
   if (page == 1) {
@@ -69,7 +66,8 @@ export const listAllMovies = async (
   } else {
     page = (page - 1) * perPage + 1;
   }
-  if (!["price", "duration"].includes(sort)) {
+
+  if (sort !== undefined && !["price", "duration"].includes(sort)) {
     return response.status(422).json({
       message: "order invalid",
     });
