@@ -149,7 +149,6 @@ export const deleteMovie = async (
   response: Response
 ): Promise<Response> => {
   const id: number = parseInt(request.params.id as string);
-  console.log(id, request.params.id);
 
   const queryString: string = `
     
